@@ -2,13 +2,15 @@ package ua.logos.service;
 
 import java.util.List;
 
-import ua.logos.entity.Book;
+import ua.logos.domain.BookDTO;
 
 public interface BookService {
 
-	void saveBook(Book book);
+	void saveBook(BookDTO book);
 
-	Book findById(Long id);
+	BookDTO findById(Long id);
 
-	List<Book> findAllBooks();
+	List<BookDTO> findAllBooks();
+	
+	void deleteBook(Long id);
 }

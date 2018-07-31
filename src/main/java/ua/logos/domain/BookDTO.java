@@ -1,23 +1,20 @@
-package ua.logos.entity;
+package ua.logos.domain;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
-
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 
-@Table(name = "book")
-public class Book extends BaseEntity {
+public class BookDTO {
 
+	private Long id;
 	private String title;
 	private String description;
 	private BigDecimal price;
