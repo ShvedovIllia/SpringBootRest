@@ -6,7 +6,7 @@ import ua.logos.domain.BookDTO;
 
 public interface BookService {
 
-	void saveBook(BookDTO book);
+	void saveBook(BookDTO bookDTO);
 
 	BookDTO findById(Long id);
 

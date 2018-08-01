@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ua.logos.domain.BookDTO;
-import ua.logos.entity.Book;
 import ua.logos.service.BookService;
 
 @RestController

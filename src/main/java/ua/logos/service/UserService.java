@@ -2,14 +2,17 @@ package ua.logos.service;
 
 import java.util.List;
 
+import ua.logos.domain.UserDTO;
 import ua.logos.entity.User;
 
 public interface UserService {
 
-	void saveUser(User user);
+	void saveUser(UserDTO userDTO);
 
-	User findById(Long id);
+	UserDTO findById(Long id);
 
-	List<User> findAllUsers();
+	List<UserDTO> findAllUsers();
+	
+	void deleteUser(Long id);
 
 }
