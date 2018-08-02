@@ -21,5 +21,5 @@ public class BookDTO {
 	private String imageURL;
 	private String isbn;
 	private String author;
-
+	private CategoryDTO category;
 }

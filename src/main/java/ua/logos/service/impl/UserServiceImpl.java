@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import ua.logos.domain.UserDTO;
 import ua.logos.entity.User;
-import ua.logos.repository.BookRepository;
 import ua.logos.repository.UserRepository;
 import ua.logos.service.UserService;
 import ua.logos.service.util.ObjectMapperUtils;

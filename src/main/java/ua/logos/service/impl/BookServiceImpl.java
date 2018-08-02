@@ -56,4 +56,11 @@ public class BookServiceImpl implements BookService {
 		bookRepository.deleteById(id);
 	}
 
+	@Override
+	public List<BookDTO> findByCategoryId(Long id) {
+		List<Book> books = bookRepository.findByCategoryId(id);
+		List<BookDTO> booksDTO = modelMapper.mapAll(books, BookDTO.class);
+		return booksDTO;
+	}
+
 }

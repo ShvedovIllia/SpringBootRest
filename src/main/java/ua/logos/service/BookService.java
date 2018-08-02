@@ -13,4 +13,6 @@ public interface BookService {
 	List<BookDTO> findAllBooks();
 	
 	void deleteBook(Long id);
+	
+	List<BookDTO> findByCategoryId(Long id);
 }
