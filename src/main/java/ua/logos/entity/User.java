@@ -1,6 +1,8 @@
 package ua.logos.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -20,4 +22,8 @@ public class User extends BaseEntity {
 	private String lastName;
 	private String email;
 	private int age;
+	
+	@ManyToOne
+	@JoinColumn(name="post_id")
+	private Post post;
 }

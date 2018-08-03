@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import ua.logos.domain.BookDTO;
 import ua.logos.service.BookService;
 
@@ -94,13 +93,12 @@ public class BookController {
 
 		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 	}
-	
+
 	@GetMapping("/category/{categoryId}")
-	public ResponseEntity<List<BookDTO>> findBooksByCategory(@PathVariable("categoryId") Long id){
-		
+	public ResponseEntity<List<BookDTO>> findBooksByCategory(@PathVariable("categoryId") Long id) {
+
 		List<BookDTO> booksDTO = bookService.findByCategoryId(id);
-		
+
 		return new ResponseEntity<List<BookDTO>>(booksDTO, HttpStatus.OK);
-		
 	}
 }

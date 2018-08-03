@@ -1,15 +1,12 @@
 package ua.logos.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ua.logos.entity.User;
+import ua.logos.entity.Post;
 
 @Repository
 
-public interface UserRepository extends JpaRepository<User, Long>{
-	
-	List<User> findByPostId(Long id);
+public interface PostRepository extends JpaRepository<Post, Long>{
+
 }

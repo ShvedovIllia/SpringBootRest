@@ -13,5 +13,7 @@ public interface UserService {
 	List<UserDTO> findAllUsers();
 	
 	void deleteUser(Long id);
+	
+	List<UserDTO> findByPostId(Long id);
 
 }
