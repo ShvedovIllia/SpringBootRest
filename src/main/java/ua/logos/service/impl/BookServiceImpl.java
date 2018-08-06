@@ -1,14 +1,23 @@
 package ua.logos.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import ua.logos.domain.BookDTO;
+import ua.logos.domain.filter.SimpleFilter;
 import ua.logos.entity.Book;
 import ua.logos.repository.BookRepository;
 import ua.logos.service.BookService;
@@ -75,6 +84,39 @@ public class BookServiceImpl implements BookService {
 		List<Book> books = booksPage.getContent();
 		List<BookDTO> booksDTO = modelMapper.mapAll(books, BookDTO.class);
 		return booksDTO;
+	}
+
+	@Override
+	public List<BookDTO> findAllBooksBySpecification(SimpleFilter filter) {
+
+		return modelMapper.mapAll(bookRepository.findAll(getSpecification(filter)), BookDTO.class);
+	}
+
+	private Specification<Book> getSpecification(SimpleFilter filter){
+		return new Specification<Book>() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 7608617533591842479L;
+
+			@Override
+			public Predicate toPredicate(Root<Book> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+				if(filter.getSearch().isEmpty()) {
+					return null;
+				}
+				Expression<String> searchByTitleExp = root.get("title");
+				Predicate searchByTitlePredicate = criteriaBuilder.like(searchByTitleExp, "%" + filter.getSearch() + "%");
+				
+				Expression<String> searchByIsbnExp = root.get("isbn");
+				Predicate searchByIsbnPredicate = criteriaBuilder.equal(searchByIsbnExp, filter.getSearch());
+				
+				Expression<BigDecimal> priceFromExp = root.get("price");
+				Predicate priceFromPredicate = criteriaBuilder.greaterThanOrEqualTo(priceFromExp, new BigDecimal ("1000"));
+				return criteriaBuilder.or(searchByTitlePredicate, searchByIsbnPredicate, priceFromPredicate);			}
+			
+		};
+		
 	}
 
 }
