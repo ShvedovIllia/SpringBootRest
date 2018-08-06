@@ -3,6 +3,9 @@ package ua.logos.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ua.logos.domain.BookDTO;
@@ -59,6 +62,17 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public List<BookDTO> findByCategoryId(Long id) {
 		List<Book> books = bookRepository.findByCategoryId(id);
+		List<BookDTO> booksDTO = modelMapper.mapAll(books, BookDTO.class);
+		return booksDTO;
+	}
+
+	@Override
+	public List<BookDTO> findAllBooksByPages(Pageable pageable) {
+		Page<Book> booksPage = bookRepository.findAll(
+					PageRequest.of(pageable.getPageNumber(), pageable.getPageSize())
+				);
+		
+		List<Book> books = booksPage.getContent();
 		List<BookDTO> booksDTO = modelMapper.mapAll(books, BookDTO.class);
 		return booksDTO;
 	}
