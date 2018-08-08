@@ -26,4 +26,6 @@ public interface BookService {
 	
 	void saveFile(MultipartFile file);
 	
+	String getFile(String fileName);
+	
 }

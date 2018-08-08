@@ -136,4 +136,9 @@ public class BookServiceImpl implements BookService {
 		
 	}
 
+	@Override
+	public String getFile(String fileName) {
+		return fileUtils.getFile(fileName);
+	}
+
 }

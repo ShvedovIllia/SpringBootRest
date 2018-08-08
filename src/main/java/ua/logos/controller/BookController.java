@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import ua.logos.domain.BookDTO;
+import ua.logos.domain.BookUpload;
 import ua.logos.domain.filter.SimpleFilter;
 import ua.logos.service.BookService;
 
@@ -59,7 +61,6 @@ public class BookController {
 
 	}
 
-	
 	@GetMapping("/{bookId}")
 	public ResponseEntity<BookDTO> getBooksById(@PathVariable("bookId") Long id) {
 
@@ -110,24 +111,46 @@ public class BookController {
 
 	@GetMapping("/pages")
 	public ResponseEntity<List<BookDTO>> findBookByPage(@PageableDefault Pageable pageable) {
-		
+
 		List<BookDTO> booksDTO = bookService.findAllBooksByPages(pageable);
 		return new ResponseEntity<List<BookDTO>>(booksDTO, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/search")
-	public ResponseEntity<List<BookDTO>> searchBook(SimpleFilter filter){
-//		SimpleFilter filter = new SimpleFilter();
-//		filter.setSearch(search);
+	public ResponseEntity<List<BookDTO>> searchBook(SimpleFilter filter) {
+		// SimpleFilter filter = new SimpleFilter();
+		// filter.setSearch(search);
 		return new ResponseEntity<List<BookDTO>>(bookService.findAllBooksBySpecification(filter), HttpStatus.OK);
-		
+
 	}
-	
+
 	@PostMapping("/upload")
 	public ResponseEntity<String> uploadFiles(@RequestParam("file") MultipartFile file) {
 		System.out.println("File: " + file.getOriginalFilename());
-		bookService.saveFile(file);		
-		return new ResponseEntity<String>("File uploaded!",HttpStatus.ACCEPTED);
+		bookService.saveFile(file);
+		return new ResponseEntity<String>("File uploaded!", HttpStatus.ACCEPTED);
+	}
+	
+	@PostMapping("/upload/object")
+	public ResponseEntity<String> uploadObjectFiles(@ModelAttribute BookUpload bookUpload) {
+		System.out.println("File: " + bookUpload.getFile().getOriginalFilename());
+		bookService.saveFile(bookUpload.getFile());
+		
+		BookDTO book = new BookDTO();
+		book.setTitle(bookUpload.getTitle());
+		book.setPrice(bookUpload.getPrice());
+		book.setImageURL(bookUpload.getFile().getOriginalFilename());
+		
+		bookService.saveBook(book);
+		return new ResponseEntity<String>("File uploaded!", HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping("/file")
+	public ResponseEntity<String> getFile(@RequestParam("fileName") String name){
+		String fileBase64 = bookService.getFile(name);
+		return new ResponseEntity<String>(fileBase64, HttpStatus.OK);
 		
 	}
+	
+	
 }
