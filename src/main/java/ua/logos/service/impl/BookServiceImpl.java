@@ -1,5 +1,6 @@
 package ua.logos.service.impl;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -15,12 +16,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import ua.logos.domain.BookDTO;
 import ua.logos.domain.filter.SimpleFilter;
 import ua.logos.entity.Book;
 import ua.logos.repository.BookRepository;
 import ua.logos.service.BookService;
+import ua.logos.service.util.CustomFileUtils;
 import ua.logos.service.util.ObjectMapperUtils;
 
 @Service
@@ -32,6 +35,9 @@ public class BookServiceImpl implements BookService {
 	
 	@Autowired
 	private ObjectMapperUtils modelMapper;
+	
+	@Autowired
+	private CustomFileUtils fileUtils;
 
 	@Override
 	public void saveBook(BookDTO bookDTO) {
@@ -116,6 +122,17 @@ public class BookServiceImpl implements BookService {
 				return criteriaBuilder.or(searchByTitlePredicate, searchByIsbnPredicate, priceFromPredicate);			}
 			
 		};
+		
+	}
+
+	@Override
+	public void saveFile(MultipartFile file) {
+		try {
+			fileUtils.saveUploadedFile(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 

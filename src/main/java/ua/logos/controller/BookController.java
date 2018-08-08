@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import ua.logos.domain.BookDTO;
 import ua.logos.domain.filter.SimpleFilter;
@@ -118,6 +120,14 @@ public class BookController {
 //		SimpleFilter filter = new SimpleFilter();
 //		filter.setSearch(search);
 		return new ResponseEntity<List<BookDTO>>(bookService.findAllBooksBySpecification(filter), HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("/upload")
+	public ResponseEntity<String> uploadFiles(@RequestParam("file") MultipartFile file) {
+		System.out.println("File: " + file.getOriginalFilename());
+		bookService.saveFile(file);		
+		return new ResponseEntity<String>("File uploaded!",HttpStatus.ACCEPTED);
 		
 	}
 }

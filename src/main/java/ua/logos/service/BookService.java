@@ -3,6 +3,7 @@ package ua.logos.service;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import ua.logos.domain.BookDTO;
 import ua.logos.domain.filter.SimpleFilter;
@@ -22,5 +23,7 @@ public interface BookService {
 	List<BookDTO> findAllBooksByPages(Pageable pageable);
 	
 	List<BookDTO> findAllBooksBySpecification(SimpleFilter filter);
+	
+	void saveFile(MultipartFile file);
 	
 }
