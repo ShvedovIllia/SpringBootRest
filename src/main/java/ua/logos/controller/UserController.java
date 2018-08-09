@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ua.logos.domain.UserDTO;
+import ua.logos.domain.filter.SimpleFilter;
 import ua.logos.service.UserService;
 
 @RestController
@@ -82,5 +83,14 @@ public class UserController {
 		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		
 	}
+	
+	@GetMapping("/searchByName")
+	public ResponseEntity<List<UserDTO>> getAllUsersByLastAndFirstName(SimpleFilter filter){
+		return new ResponseEntity<List<UserDTO>>(userService.findAllUsersBySpecificationFirstAndLastName(filter),HttpStatus.OK);
+	}
 
+	@GetMapping("/searchByEmail")
+	public ResponseEntity<List<UserDTO>> getAllUsersByEmail(SimpleFilter filter){
+		return new ResponseEntity<List<UserDTO>> (userService.findAllUsersBySpecificationEmail(filter) ,HttpStatus.OK);
+	}
 }

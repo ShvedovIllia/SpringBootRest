@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
 				Expression<String> searchByFirstNameExp = root.get("firstName");
 				Predicate searchByFirstNamePred = criteriaBuilder.like(searchByFirstNameExp,
 						"%" + filter.getSearch() + "%");
-				Expression<String> searchByLastNameExp = root.get("firstName");
+				Expression<String> searchByLastNameExp = root.get("lastName");
 				Predicate searchByLastNamePred = criteriaBuilder.like(searchByLastNameExp,
 						"%" + filter.getSearch() + "%");
 				return criteriaBuilder.or(searchByFirstNamePred, searchByLastNamePred);
