@@ -22,11 +22,11 @@ import ua.logos.service.util.ObjectMapperUtils;
 
 @Service
 
-public class UserServiceImpl implements UserService{
-	
+public class UserServiceImpl implements UserService {
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	ObjectMapperUtils modelMapper;
 
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService{
 	public void saveUser(UserDTO userDTO) {
 
 		User userEntity = modelMapper.map(userDTO, User.class);
-		
+
 		userRepository.save(userEntity);
 	}
 
@@ -42,13 +42,13 @@ public class UserServiceImpl implements UserService{
 	public UserDTO findById(Long id) {
 		User userEntity = userRepository.findById(id).get();
 		UserDTO userDTO = modelMapper.map(userEntity, UserDTO.class);
-		
+
 		return userDTO;
 	}
 
 	@Override
 	public List<UserDTO> findAllUsers() {
-		
+
 		List<User> usersEntity = userRepository.findAll();
 		List<UserDTO> usersDTO = modelMapper.mapAll(usersEntity, UserDTO.class);
 		return usersDTO;
@@ -56,9 +56,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void deleteUser(Long id) {
-		
+
 		userRepository.deleteById(id);
-		
+
 	}
 
 	@Override
@@ -67,28 +67,65 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<UserDTO> findAllUsersBySpecification(SimpleFilter filter) {
-		return modelMapper.mapAll(userRepository.findAll(getSpecification(filter)), UserDTO.class);
+	public List<UserDTO> findAllUsersBySpecificationFirstAndLastName(SimpleFilter filter) {
+		return modelMapper.mapAll(userRepository.findAll(getSpecificationFirstAndLastName(filter)), UserDTO.class);
 	}
-	
-	private Specification<User> getSpecification(SimpleFilter filter){
+
+	private Specification<User> getSpecificationFirstAndLastName(SimpleFilter filter) {
 		return new Specification<User>() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 8775465944233141635L;
 
 			@Override
 			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
-				if(filter.getSearch().isEmpty()) {
+				if (filter.getSearch().isEmpty()) {
 					return null;
 				}
-				
+
 				Expression<String> searchByFirstNameExp = root.get("firstName");
-				Predicate searchByFirstNamePred = criteriaBuilder.like(searchByFirstNameExp, "%" + filter.getSearch() + "%");
+				Predicate searchByFirstNamePred = criteriaBuilder.like(searchByFirstNameExp,
+						"%" + filter.getSearch() + "%");
 				Expression<String> searchByLastNameExp = root.get("firstName");
-				Predicate searchByLastNamePred = criteriaBuilder.like(searchByLastNameExp, "%" + filter.getSearch() + "%");
+				Predicate searchByLastNamePred = criteriaBuilder.like(searchByLastNameExp,
+						"%" + filter.getSearch() + "%");
 				return criteriaBuilder.or(searchByFirstNamePred, searchByLastNamePred);
 			}
 		};
-		
+
+	}
+
+	@Override
+	public List<UserDTO> findAllUsersBySpecificationEmail(SimpleFilter filter) {
+		return modelMapper.mapAll(userRepository.findAll(getSpecificationByEmail(filter)), UserDTO.class);
+	}
+
+	private Specification<User> getSpecificationByEmail(SimpleFilter filter) {
+		return new Specification<User>() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -1764926288211458376L;
+
+			@Override
+			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+
+				if (filter.getSearch().isEmpty()) {
+					return null;
+				}
+
+				Expression<String> searchByEmailExp = root.get("email");
+				Predicate searchByEmailPredicate = criteriaBuilder.like(searchByEmailExp,
+						"%" + filter.getSearch() + "%");
+
+				return criteriaBuilder.or(searchByEmailPredicate);
+			}
+
+		};
 	}
 
 	@Override

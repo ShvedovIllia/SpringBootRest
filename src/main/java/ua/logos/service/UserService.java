@@ -14,13 +14,15 @@ public interface UserService {
 	UserDTO findById(Long id);
 
 	List<UserDTO> findAllUsers();
-	
+
 	void deleteUser(Long id);
-	
+
 	List<UserDTO> findByPostId(Long id);
-	
-	List<UserDTO> findAllUsersBySpecification(SimpleFilter filter);
-	
+
+	List<UserDTO> findAllUsersBySpecificationFirstAndLastName(SimpleFilter filter);
+
 	List<UserDTO> findAllUsersByPages(Pageable pageble);
+
+	List<UserDTO> findAllUsersBySpecificationEmail(SimpleFilter filter);
 
 }
