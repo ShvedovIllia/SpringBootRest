@@ -56,9 +56,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public BookDTO findById(Long id) {
-		Book bookEntity = bookRepository.findById(id).get();
-		BookDTO bookDTO = modelMapper.map(bookEntity, BookDTO.class);
-		return bookDTO;
+		return modelMapper.map(bookRepository.findById(id).get(), BookDTO.class);
 	}
 
 	@Override
