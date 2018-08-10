@@ -22,7 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import ua.logos.domain.BookDTO;
 import ua.logos.domain.BookUpload;
 import ua.logos.domain.filter.SimpleFilter;
+import ua.logos.exceptions.models.BookNotFoundException;
 import ua.logos.service.BookService;
+import static ua.logos.constants.ApplicationConstants.BOOK_NOT_FOUND_EXCEPTION_MESSAGE;;
 
 @RestController
 @RequestMapping("books")
@@ -30,8 +32,12 @@ public class BookController {
 	/*
 	 * @GetMapping("/test") public String test() { return "Hello test"; }
 	 */
+
 	@Autowired
 	private BookService bookService;
+	
+	
+	
 	//
 	// @PostMapping
 	// public ResponseEntity<Void> addBook(@RequestBody Book book){
@@ -65,6 +71,9 @@ public class BookController {
 	public ResponseEntity<BookDTO> getBooksById(@PathVariable("bookId") Long id) {
 
 		BookDTO bookDTO = bookService.findById(id);
+		if(bookDTO==null) {
+			throw new BookNotFoundException(BOOK_NOT_FOUND_EXCEPTION_MESSAGE);
+		}
 		return new ResponseEntity<BookDTO>(bookDTO, HttpStatus.OK);
 	}
 
@@ -151,6 +160,8 @@ public class BookController {
 		return new ResponseEntity<String>(fileBase64, HttpStatus.OK);
 		
 	}
+	
+	
 	
 	
 }
